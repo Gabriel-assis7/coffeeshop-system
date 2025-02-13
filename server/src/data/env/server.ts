@@ -10,8 +10,10 @@ const envServerCredentials = z.object({
 export const env = (): z.infer<typeof envServerCredentials> => {
   try {
     return envServerCredentials.parse(process.env);
-  } catch (error) {
-    console.error('Error reading environment variables:', error);
+  } catch (error: unknown) {
+    const errorMessage =
+      error instanceof Error ? error.message : 'Unknown error occurred';
+    console.error(`Error reading environment variables: ${errorMessage}`);
     process.exit(1);
   }
 };

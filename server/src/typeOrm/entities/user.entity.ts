@@ -8,10 +8,10 @@ import {
 } from 'typeorm';
 
 const userRole = ['consumer', 'employer', 'admin'] as const;
-export type UserRole = (typeof userRole)[number];
+type UserRole = (typeof userRole)[number];
 
 const activeStatues = ['active', 'inactive'] as const;
-export type ActiveStatuses = (typeof activeStatues)[number];
+type ActiveStatuses = (typeof activeStatues)[number];
 
 @Entity()
 export class User {
@@ -33,11 +33,13 @@ export class User {
   @Column({ nullable: false })
   password: string;
 
+  @Column({ nullable: false })
+  imageUrl: string;
+
   @Column({
     type: 'enum',
     enum: userRole,
     default: userRole[0],
-    nullable: false,
   })
   role: UserRole;
 

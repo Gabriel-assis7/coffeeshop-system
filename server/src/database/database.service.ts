@@ -14,8 +14,10 @@ export class DatabaseService implements OnModuleInit {
         await this.dataSource.initialize();
         console.log('Connected to the database successfully.');
       }
-    } catch (error) {
-      console.error('Failed to initialize database:', error);
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Unknown error occurred';
+      console.error('Failed to initialize database:', errorMessage);
       process.exit(1);
     }
   }
