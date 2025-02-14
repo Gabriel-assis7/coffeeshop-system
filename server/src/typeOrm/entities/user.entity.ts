@@ -3,9 +3,13 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Order } from './order.entity';
+import { Cart } from './cart.entity';
 
 const userRole = ['consumer', 'employer', 'admin'] as const;
 type UserRole = (typeof userRole)[number];
@@ -42,6 +46,12 @@ export class User {
     default: userRole[0],
   })
   role: UserRole;
+
+  @OneToMany(() => Order, (order) => order.user)
+  orders: Order[];
+
+  @OneToOne(() => Cart, (cart) => cart.user)
+  cart: Cart;
 
   @Column({
     type: 'enum',

@@ -11,12 +11,24 @@ import { Product } from './typeOrm/entities/product.entity';
 import { Category } from './typeOrm/entities/category.entity';
 import { CategoryModule } from './category/category.module';
 import { ProductModule } from './product/product.module';
+import { Order } from './typeOrm/entities/order.entity';
+import { OrderItem } from './typeOrm/entities/orderItem.entity';
+import { CartItem } from './typeOrm/entities/cartItem.entity';
+import { Cart } from './typeOrm/entities/cart.entity';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot(typeOrmConfig),
-    TypeOrmModule.forFeature([User, Product, Category]),
+    TypeOrmModule.forFeature([
+      User,
+      Product,
+      Category,
+      Order,
+      OrderItem,
+      Cart,
+      CartItem,
+    ]),
     UserModule,
     CategoryModule,
     ProductModule,

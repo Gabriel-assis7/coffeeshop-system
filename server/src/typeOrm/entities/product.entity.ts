@@ -36,7 +36,9 @@ export class Product {
   })
   status: ActiveStatuses;
 
-  @ManyToOne(() => Category, (category) => category.products)
+  @ManyToOne(() => Category, (category) => category.products, {
+    onDelete: 'CASCADE',
+  })
   category: Category;
 
   @CreateDateColumn({ nullable: false })

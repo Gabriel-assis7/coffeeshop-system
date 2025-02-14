@@ -3,24 +3,31 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  OneToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Product } from './product.entity';
+import { Order } from './order.entity';
 
 @Entity()
-export class Category {
+export class OrderItem {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @ManyToOne(() => Order, (order) => order.items, { onDelete: 'CASCADE' })
+  order: Order;
+
+  @ManyToOne(() => Product, { eager: true, onDelete: 'SET NULL' })
+  product: Product | null;
+
   @Column({ nullable: false })
-  name: string;
+  quantity: number;
 
-  @OneToMany(() => Product, (product) => product.category, { cascade: true })
-  products: Product[];
+  @Column('decimal', { nullable: false })
+  price: number;
 
-  @CreateDateColumn({ nullable: false })
+  @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
