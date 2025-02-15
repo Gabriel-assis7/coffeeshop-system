@@ -15,6 +15,9 @@ import { Order } from './typeOrm/entities/order.entity';
 import { OrderItem } from './typeOrm/entities/orderItem.entity';
 import { CartItem } from './typeOrm/entities/cartItem.entity';
 import { Cart } from './typeOrm/entities/cart.entity';
+import { CartModule } from './cart/cart.module';
+import { OrderModule } from './order/order.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -32,6 +35,9 @@ import { Cart } from './typeOrm/entities/cart.entity';
     UserModule,
     CategoryModule,
     ProductModule,
+    CartModule,
+    OrderModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService, DatabaseService],
