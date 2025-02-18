@@ -3,5 +3,14 @@ export default async function ConsumerLayout({
 }: {
   readonly children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return (
+    <>
+      <NavBar />
+      {children}
+    </>
+  );
+}
+
+export function NavBar() {
+  return <h1>hi</h1>;
 }

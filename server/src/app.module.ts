@@ -1,45 +1,44 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { typeOrmConfig } from './typeOrm/typeorm.config';
-import { User } from './typeOrm/entities/user.entity';
-import { ConfigModule } from '@nestjs/config';
-import { DatabaseService } from './database/database.service';
-import { UserModule } from './user/user.module';
-import { Product } from './typeOrm/entities/product.entity';
-import { Category } from './typeOrm/entities/category.entity';
-import { CategoryModule } from './category/category.module';
-import { ProductModule } from './product/product.module';
-import { Order } from './typeOrm/entities/order.entity';
-import { OrderItem } from './typeOrm/entities/orderItem.entity';
-import { CartItem } from './typeOrm/entities/cartItem.entity';
-import { Cart } from './typeOrm/entities/cart.entity';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { UsersModule } from './users/users.module';
+import { ProductsModule } from './products/products.module';
+import { CategoriesModule } from './categories/categories.module';
 import { CartModule } from './cart/cart.module';
-import { OrderModule } from './order/order.module';
-import { AuthModule } from './auth/auth.module';
+import { OrdersModule } from './orders/orders.module';
+import { DatabaseModule } from './typeOrm/database.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { CartItemsModule } from './cart-items/cart-items.module';
+import { OrderItemsModule } from './order-items/order-items.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
-    TypeOrmModule.forRoot(typeOrmConfig),
-    TypeOrmModule.forFeature([
-      User,
-      Product,
-      Category,
-      Order,
-      OrderItem,
-      Cart,
-      CartItem,
-    ]),
-    UserModule,
-    CategoryModule,
-    ProductModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        type: 'postgres',
+        host: configService.get<string>('DB_HOST'),
+        port: configService.get<number>('DB_PORT'),
+        username: configService.get<string>('DB_USER'),
+        password: configService.get<string>('DB_PASSWORD'),
+        database: configService.get<string>('DB_NAME'),
+        entities: [__dirname + '/**/*.entity{.ts,.js}'],
+        autoLoadEntities: true,
+        synchronize: true,
+      }),
+    }),
+    UsersModule,
+    ProductsModule,
+    CategoriesModule,
     CartModule,
-    OrderModule,
-    AuthModule,
+    OrdersModule,
+    DatabaseModule,
+    CartItemsModule,
+    OrderItemsModule,
   ],
-  controllers: [AppController],
-  providers: [AppService, DatabaseService],
+  providers: [],
 })
 export class AppModule {}

@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z, ZodError } from 'zod';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
@@ -12,7 +12,7 @@ export const env = (): z.infer<typeof envServerCredentials> => {
     return envServerCredentials.parse(process.env);
   } catch (error: unknown) {
     const errorMessage =
-      error instanceof Error ? error.message : 'Unknown error occurred';
+      error instanceof ZodError ? error.message : 'Unknown error occurred';
     console.error(`Error reading environment variables: ${errorMessage}`);
     process.exit(1);
   }
