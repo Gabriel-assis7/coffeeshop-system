@@ -9,12 +9,14 @@ import { DatabaseModule } from './typeOrm/database.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CartItemsModule } from './cart-items/cart-items.module';
 import { OrderItemsModule } from './order-items/order-items.module';
+import { User } from './typeOrm/entities/user.entity';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    TypeOrmModule.forFeature([User]),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
